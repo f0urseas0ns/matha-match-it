@@ -1,0 +1,30 @@
+module getnumber (
+    input clk,  // clock
+    input rst,  // reset
+    input getnumberbutton,  // button to get number from number cycle
+    output number[11]
+    
+  ) {
+  .clk(clk) {
+    // The reset conditioner is used to synchronize the reset signal to the FPGA
+    // clock. This ensures the entire FPGA comes out of reset at the same time.
+    //edge_detector edge_detector(#RISE(1), #FALL(0)); // detect rising edges
+    //button_conditioner button_cond;     // button input conditioner
+    .rst(rst){
+      num_cycle num_cycle;
+      dff getnumber[11];
+    }
+  }
+  
+  always {
+    // GET NUMBER
+    //button_cond.in = getnumberbutton;      // raw button input
+    //edge_detector.in = button_cond.out; // input to the edge_detector
+    getnumber.d = getnumber.q;              // hold value of counter
+    number = getnumber.q;  // state of operand
+    
+    if (getnumberbutton) {             // if edge detected
+      getnumber.d = num_cycle.number;         // GET CURRENT NUMBER OF num_cycle
+    }
+  }
+}

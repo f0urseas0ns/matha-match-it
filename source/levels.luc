@@ -1,0 +1,519 @@
+module levels (
+    input clk,  // clock
+    input rst,  // reset
+    input tempresult[11],  // temporary result
+    output targetresultdisplay[11],
+    output life[9],
+    input getresultbutton,
+    input getnumberbutton,
+    output pass
+  ) {
+  
+  .clk(clk){
+    //    edge_detector edge_detector(#RISE(1), #FALL(0)); // detect rising edges
+    //    button_conditioner button_cond;     // button input conditioner
+    .rst(rst){
+      dff counter[30](.clk(clk));  // CLOCK
+      dff lives[9](.clk(clk));  // MOVES LEFT
+      fsm state = {IDLE, ONE, IDLE2, TWO, IDLE3, THREE, IDLE4, FOUR, IDLE5,
+        FIVE, IDLE6, SIX, IDLE7, SEVEN, IDLE8, EIGHT, IDLE9, NINE, IDLE10,
+        TEN, LOSE, WIN};  // EACH LEVEL
+      dff pass_signal;
+      dff targetresult[8];
+    }
+  }
+  
+  always {
+    counter.d = counter.q + 1;
+    
+    lives.d = lives.q;
+    life = lives.q; //number of moves left
+    
+    pass = pass_signal.q; //reset alu
+    pass_signal.d = pass_signal.q;
+    
+    targetresult.d = targetresult.q;
+    targetresultdisplay = targetresult.q;
+    
+    case(state.q){
+      // State to choose starting number
+      state.IDLE:
+        lives.d = 9b111111111;
+        pass_signal.d = 0;
+        if (getresultbutton == 1) {
+          state.d = state.ONE;
+          counter.d = 0;
+        }
+      
+      state.ONE:
+        // LEVEL ONE
+        targetresult.d = 50;
+        
+        if (tempresult >= 2000) {
+          state.d = state.LOSE;
+        }
+        
+        // time to make a move
+        if (counter.q[29] == 1) {
+          if (lives.q > 0) {
+            lives.d = lives.q >> 1;
+            state.d = state.ONE;
+            counter.d = 0;
+            pass_signal.d = 0;
+          }
+          else {
+            state.d = state.LOSE;
+          }
+        }
+        // choosing a number
+        if (getnumberbutton == 1) {
+          if (tempresult == 50) { //446
+            lives.d = 9b111111111;
+            state.d = state.IDLE2;
+            counter.d = 0;
+            pass_signal.d = 1;
+          }
+          else if (tempresult != 8) {
+            if (lives.q > 0) {
+              lives.d = lives.q >> 1;
+              state.d = state.ONE;
+              counter.d = 0;
+              pass_signal.d = 0;
+            }
+            else {
+              state.d = state.LOSE;
+              
+            }
+          }
+        }
+      
+      state.IDLE2:
+        lives.d = 9b111111111;
+        pass_signal.d = 0;
+        if (getresultbutton == 1) {
+          state.d = state.TWO;
+          counter.d = 0;
+        }
+      
+      state.TWO:
+        // LEVEL TWO
+        targetresult.d = 158;
+        
+        if (tempresult >= 2000) {
+          state.d = state.LOSE;
+        }
+        
+        if (counter.q[29] == 1) {
+          if (lives.q > 0) {
+            lives.d = lives.q >> 1;
+            state.d = state.TWO;
+            counter.d = 0;
+            pass_signal.d = 0;
+          }
+          else {
+            state.d = state.LOSE;
+          }
+        }
+        //choosing a number
+        if (getnumberbutton == 1) {
+          if (tempresult == 158) {
+            lives.d = 9b111111111;
+            state.d = state.IDLE3;
+            counter.d = 0;
+            pass_signal.d = 1;
+          }
+          else if (tempresult != 158) {
+            if (lives.q > 0) {
+              lives.d = lives.q >> 1;
+              state.d = state.TWO;
+              counter.d = 0;
+              pass_signal.d = 0;
+            }
+            else {
+              state.d = state.LOSE;
+            }
+          }
+        }
+        
+      state.IDLE3:
+        lives.d = 9b111111111;
+        pass_signal.d = 0;
+        if (getresultbutton == 1) {
+          state.d = state.THREE;
+          counter.d = 0;
+        }
+      
+      state.THREE:
+        // LEVEL THREE
+        targetresult.d = 709;
+        
+        if (tempresult >= 2000) {
+          state.d = state.LOSE;
+        }
+        
+        if (counter.q[29] == 1) {
+          if (lives.q > 0) {
+            lives.d = lives.q >> 1;
+            state.d = state.THREE;
+            counter.d = 0;
+            pass_signal.d = 0;
+          }
+          else {
+            state.d = state.LOSE;
+          }
+        }
+        if (getnumberbutton == 1) {
+          if (tempresult == 709) {
+            lives.d = 9b111111111;
+            state.d = state.IDLE4;
+            counter.d = 0;
+            pass_signal.d = 1;
+          }
+          else if (tempresult != 709) {
+            if (lives.q > 0) {
+              lives.d = lives.q >> 1;
+              state.d = state.THREE;
+              counter.d = 0;
+              pass_signal.d = 0;
+            }
+            else {
+              state.d = state.LOSE;
+            }
+          }
+        }
+        
+      state.IDLE4:
+        lives.d = 9b111111111;
+        pass_signal.d = 0;
+        if (getresultbutton == 1) {
+          state.d = state.FOUR;
+          counter.d = 0;
+        }
+      
+      state.FOUR:
+        // LEVEL FOUR
+        targetresult.d = 557;
+        
+        if (tempresult >= 2000) {
+          state.d = state.LOSE;
+        }
+        
+        if (counter.q[29] == 1) {
+          if (lives.q > 0) {
+            lives.d = lives.q >> 1;
+            state.d = state.FOUR;
+            counter.d = 0;
+            pass_signal.d = 0;
+          }
+          else {
+            state.d = state.LOSE;
+          }
+        }
+        if (getnumberbutton == 1) {
+          if (tempresult == 557) {
+            lives.d = 9b111111111;
+            state.d = state.IDLE5;
+            counter.d = 0;
+            pass_signal.d = 1;
+          }
+          else if (tempresult != 557) {
+            if (lives.q > 0) {
+              lives.d = lives.q >> 1;
+              state.d = state.FOUR;
+              counter.d = 0;
+              pass_signal.d = 0;
+            }
+            else {
+              state.d = state.LOSE;
+            }
+          }
+        }
+        
+      state.IDLE5:
+        lives.d = 9b111111111;
+        pass_signal.d = 0;
+        if (getresultbutton == 1) {
+          state.d = state.FIVE;
+          counter.d = 0;
+        }
+        
+      state.FIVE:
+        // LEVEL FIVE
+        targetresult.d = 258;
+        
+        if (tempresult >= 2000) {
+          state.d = state.LOSE;
+        }
+        
+        if (counter.q[29] == 1) {
+          if (lives.q > 0) {
+            lives.d = lives.q >> 1;
+            state.d = state.FIVE;
+            counter.d = 0;
+            pass_signal.d = 0;
+          }
+          else {
+            state.d = state.LOSE;
+          }
+        }
+        if (getnumberbutton == 1) {
+          if (tempresult == 258) {
+            lives.d = 9b111111111;
+            state.d = state.IDLE6;
+            counter.d = 0;
+            pass_signal.d = 1;
+          }
+          else if (tempresult != 258) {
+            if (lives.q > 0) {
+              lives.d = lives.q >> 1;
+              state.d = state.FIVE;
+              counter.d = 0;
+              pass_signal.d=0;
+            }
+            else {
+              state.d = state.LOSE;
+            }
+          }
+        }
+        
+      state.IDLE6:
+        lives.d = 9b111111111;
+        pass_signal.d = 0;
+        if (getresultbutton == 1) {
+          state.d = state.SIX;
+          counter.d = 0;
+        }
+        
+      state.SIX:
+        // LEVEL SIX
+        targetresult.d = 861;
+        
+        if (tempresult >= 2000) {
+          state.d = state.LOSE;
+        }
+        
+        if (counter.q[29] == 1) {
+          if (lives.q > 0) {
+            lives.d = lives.q >> 1;
+            state.d = state.SIX;
+            counter.d = 0;
+            pass_signal.d = 0;
+          }
+          else {
+            state.d = state.LOSE;
+          }
+        }
+        if (getnumberbutton == 1) {
+          if (tempresult == 861) {
+            lives.d = 9b111111111;
+            state.d = state.IDLE7;
+            counter.d = 0;
+            pass_signal.d=1;
+          }
+          else if (tempresult != 861) {
+            if (lives.q > 0) {
+              lives.d = lives.q >> 1;
+              state.d = state.SIX;
+              counter.d = 0;
+              pass_signal.d=0;
+            }
+            else {
+              state.d = state.LOSE;
+            }
+          }
+        }
+        
+      state.IDLE7:
+        lives.d = 9b111111111;
+        pass_signal.d = 0;
+        if (getresultbutton == 1) {
+          state.d = state.SEVEN;
+          counter.d = 0;
+        }
+        
+      state.SEVEN:
+        // LEVEL SEVEN
+        targetresult.d = 692;
+        
+        if (tempresult >= 2000) {
+          state.d = state.LOSE;
+        }
+        
+        if (counter.q[29] == 1) {
+          if (lives.q > 0) {
+            lives.d = lives.q >> 1;
+            state.d = state.SEVEN;
+            counter.d = 0;
+            pass_signal.d = 0;
+          }
+          else {
+            state.d = state.LOSE;
+          }
+        }
+        if (getnumberbutton == 1) {
+          if (tempresult == 692) {
+            lives.d = 9b111111111;
+            state.d = state.IDLE8;
+            counter.d = 0;
+            pass_signal.d = 1;
+          }
+          else if (tempresult != 692) {
+            if (lives.q > 0) {
+              lives.d = lives.q >> 1;
+              state.d = state.SEVEN;
+              counter.d = 0;
+              pass_signal.d = 0;
+            }
+            else {
+              state.d = state.LOSE;
+            }
+          }
+        }
+        
+      state.IDLE8:
+        lives.d = 9b111111111;
+        pass_signal.d = 0;
+        if (getresultbutton == 1) {
+          state.d = state.EIGHT;
+          counter.d = 0;
+        }
+        
+      state.EIGHT:
+        // LEVEL EIGHT
+        targetresult.d = 947;
+        
+        if (tempresult >= 2000) {
+          state.d = state.LOSE;
+        }
+        
+        if (counter.q[29] == 1) {
+          if (lives.q > 0) {
+            lives.d = lives.q >> 1;
+            state.d = state.EIGHT;
+            counter.d = 0;
+            pass_signal.d = 0;
+          }
+          else {
+            state.d = state.LOSE;
+          }
+        }
+        if (getnumberbutton == 1) {
+          if (tempresult == 947) {
+            lives.d = 9b111111111;
+            state.d = state.IDLE9;
+            counter.d = 0;
+            pass_signal.d = 1;
+          }
+          else if (tempresult != 947) {
+            if (lives.q > 0) {
+              lives.d = lives.q >> 1;
+              state.d = state.EIGHT;
+              counter.d = 0;
+              pass_signal.d = 0;
+            }
+            else {
+              state.d = state.LOSE;
+            }
+          }
+        }
+        
+      state.IDLE9:
+        lives.d = 9b111111111;
+        pass_signal.d = 0;
+        if (getresultbutton == 1) {
+          state.d = state.NINE;
+          counter.d = 0;
+        }
+        
+      state.NINE:
+        // LEVEL NINE
+        targetresult.d = 326;
+        
+        if (tempresult >= 2000) {
+          state.d = state.LOSE;
+        }
+        
+        if (counter.q[29] == 1) {
+          if (lives.q > 0) {
+            lives.d = lives.q >> 1;
+            state.d = state.NINE;
+            counter.d = 0;
+            pass_signal.d = 0;
+          }
+          else {
+            state.d = state.LOSE;
+          }
+        }
+        if (getnumberbutton == 1) {
+          if (tempresult == 326) {
+            lives.d = 9b111111111;
+            state.d = state.IDLE10;
+            counter.d = 0;
+            pass_signal.d = 1;
+          }
+          else if (tempresult != 326) {
+            if (lives.q > 0) {
+              lives.d = lives.q >> 1;
+              state.d = state.NINE;
+              counter.d = 0;
+              pass_signal.d = 0;
+            }
+            else {
+              state.d = state.LOSE;
+            }
+          }
+        }
+        
+      state.IDLE10:
+        lives.d = 9b111111111;
+        pass_signal.d = 0;
+        if (getresultbutton == 1) {
+          state.d = state.TEN;
+          counter.d = 0;
+        }
+        
+      state.TEN:
+        // LEVEL TEN
+        targetresult.d = 975;
+        
+        if (tempresult >= 2000) {
+          state.d = state.LOSE;
+        }
+        
+        if (counter.q[29] == 1) {
+          if (lives.q > 0) {
+            lives.d = lives.q >> 1;
+            state.d = state.TEN;
+            counter.d = 0;
+            pass_signal.d = 0;
+          }
+          else {
+            state.d = state.LOSE;
+          }
+        }
+        if (getnumberbutton == 1) {
+          if (tempresult == 975) {
+            state.d = state.WIN;
+          }
+          else if (tempresult != 975) {
+            if (lives.q > 0) {
+              lives.d = lives.q >> 1;
+              state.d = state.TEN;
+              counter.d = 0;
+              pass_signal.d = 0;
+            }
+            else {
+              state.d = state.LOSE;
+            }
+          }
+        }
+      
+      state.LOSE:
+        state.d = state.LOSE;
+        lives.d = 0;
+      
+      state.WIN:
+        state.d = state.WIN;
+    }
+  }
+}

@@ -1,0 +1,71 @@
+module operandbutton (
+    input clk,  // clock
+    input rst,  // reset
+    input changebutton, // SIGNAL FROM OPERAND CHANGE BUTTON
+    output alufn[6],
+    output status[3]
+  ) {
+  
+  .clk(clk){
+    edge_detector edge_detector(#RISE(1), #FALL(0)); // detect rising edges
+    button_conditioner button_cond;     // button input conditioner
+    .rst(rst){
+      dff operand[3];
+      dff combination[6];
+      fsm state = {START, ADD, SUBTRACT, MULTIPLIER};
+    }
+  }
+  
+  always {
+    // ALUFN
+    alufn = combination.q;  // outgoing alufn
+    combination.d = combination.q;  // fsm for alufn
+    
+    // SWITCHING OF OPERAND
+    button_cond.in = changebutton;      // raw button input
+    edge_detector.in = button_cond.out; // input to the edge_detector
+    operand.d = operand.q;              // hold value of counter
+    status = operand.q;  // state of operand
+    
+    if (edge_detector.out) {             // if edge detected
+      operand.d = operand.q + 1;         // add one to the counter
+    }
+    
+    case (state.q){
+      state.START:
+        operand.d = 1;
+        state.d = state.ADD;
+    
+      //ADDITION (ADDER MODULE)
+      state.ADD:
+        combination.d = 6h00;
+        if (operand.q == 2) {
+          state.d = state.SUBTRACT;
+        }
+        else {
+          state.d = state.ADD;
+        }
+      //SUBTRACTION
+      state.SUBTRACT:
+        combination.d=6h01;
+        if(operand.q == 3) {
+          operand.d = 4;
+          state.d = state.MULTIPLIER;
+        }
+        else {
+          state.d = state.SUBTRACT;
+        }
+      
+      //MULTIPLIER
+      state.MULTIPLIER:
+        combination.d = 6h02;
+        if(operand.q == 5) {
+          operand.d = 1;
+          state.d = state.ADD;
+        }
+        else {
+          state.d = state.MULTIPLIER;
+        }
+    }
+  }
+}

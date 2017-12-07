@@ -1,0 +1,486 @@
+module sevenseg (
+    input clk,  // clock
+    input rst,  // reset
+    input signal[16],
+    output digit_1,
+    output digit_2,
+    output digit_3,
+    output digit_4,
+    output seg1A,
+    output seg1B,
+    output seg1C,
+    output seg1D,
+    output seg1E,
+    output seg1F,
+    output seg1G,
+    output seg2A,
+    output seg2B,
+    output seg2C,
+    output seg2D,
+    output seg2E,
+    output seg2F,
+    output seg2G,
+    output seg3A,
+    output seg3B,
+    output seg3C,
+    output seg3D,
+    output seg3E,
+    output seg3F,
+    output seg3G,
+    output seg4A,
+    output seg4B,
+    output seg4C,
+    output seg4D,
+    output seg4E,
+    output seg4F,
+    output seg4G
+  ) {
+  
+  always {
+    digit_4 = 8h00;
+    seg4A = 1;
+    seg4B = 1;
+    seg4C = 1;
+    seg4D = 1;
+    seg4E = 1;
+    seg4F = 1;
+    seg4G = 8h00;
+    
+    digit_3 = 8h00;
+    seg3A = 1;
+    seg3B = 1;
+    seg3C = 1;
+    seg3D = 1;
+    seg3E = 1;
+    seg3F = 1;
+    seg3G = 8h00;
+    
+    digit_2 = 8h00;
+    seg2A = 1;
+    seg2B = 1;
+    seg2C = 1;
+    seg2D = 1;
+    seg2E = 1;
+    seg2F = 1;
+    seg2G = 8h00;
+    
+    digit_1 = 8h00;
+    seg1A = 1;
+    seg1B = 1;
+    seg1C = 1;
+    seg1D = 1;
+    seg1E = 1;
+    seg1F = 1;
+    seg1G = 8h00;
+    
+    
+    if (signal[3:0] == b0000){
+      
+      digit_4 = 8h00;
+      seg4A = 1;
+      seg4B = 1;
+      seg4C = 1;
+      seg4D = 1;
+      seg4E = 1;
+      seg4F = 1;
+      seg4G = 8h00;
+    }
+    else if (signal[3:0] == b0001){
+      digit_4 = 8h00;
+      seg4A = 8h00;
+      seg4B = 1;
+      seg4C = 1;
+      seg4D = 8h00;
+      seg4E = 8h00;
+      seg4F = 8h00;
+      seg4G = 8h00;
+    }
+    else if (signal[3:0] == b0010){
+      digit_4 = 8h00;
+      seg4A = 1;
+      seg4B = 1;
+      seg4C = 8h00;
+      seg4D = 1;
+      seg4E = 1;
+      seg4F = 8h00;
+      seg4G = 1;
+    }
+    else if (signal[3:0] == b0011){
+      digit_4 = 8h00;
+      seg4A = 1;
+      seg4B = 1;
+      seg4C = 1;
+      seg4D = 1;
+      seg4E = 8h00;
+      seg4F = 8h00;
+      seg4G = 1;
+    }
+    else if (signal[3:0] == b0100){
+      digit_4 = 8h00;
+      seg4A = 8h00;
+      seg4B = 1;
+      seg4C = 1;
+      seg4D = 8h00;
+      seg4E = 8h00;
+      seg4F = 1;
+      seg4G = 1;
+    }
+    else if (signal[3:0] == b0101){
+      digit_4 = 8h00;
+      seg4A = 1;
+      seg4B = 8h00;
+      seg4C = 1;
+      seg4D = 1;
+      seg4E = 8h00;
+      seg4F = 1;
+      seg4G = 1;
+    }
+    else if (signal[3:0] == b0110){
+      digit_4 = 8h00;
+      seg4A = 1;
+      seg4B = 8h00;
+      seg4C = 1;
+      seg4D = 1;
+      seg4E = 1;
+      seg4F = 1;
+      seg4G = 1;
+    }
+    else if (signal[3:0] == b0111){
+      digit_4 = 8h00;
+      seg4A = 1;
+      seg4B = 1;
+      seg4C = 1;
+      seg4D = 8h00;
+      seg4E = 8h00;
+      seg4F = 8h00;
+      seg4G = 8h00;
+    }
+    else if (signal[3:0] == b1000){
+      digit_4 = 8h00;
+      seg4A = 1;
+      seg4B = 1;
+      seg4C = 1;
+      seg4D = 1;
+      seg4E = 1;
+      seg4F = 1;
+      seg4G = 1;
+    }
+    else if (signal[3:0] == b1001){
+      digit_4 = 8h00;
+      seg4A = 1;
+      seg4B = 1;
+      seg4C = 1;
+      seg4D = 1;
+      seg4E = 8h00;
+      seg4F = 1;
+      seg4G = 1;
+    }
+    
+    if (signal[7:4] == b0000){
+      
+      digit_3 = 8h00;
+      seg3A = 1;
+      seg3B = 1;
+      seg3C = 1;
+      seg3D = 1;
+      seg3E = 1;
+      seg3F = 1;
+      seg3G = 8h00;
+    }
+    else if (signal[7:4] == b0001){
+      digit_3 = 8h00;
+      seg3A = 8h00;
+      seg3B = 1;
+      seg3C = 1;
+      seg3D = 8h00;
+      seg3E = 8h00;
+      seg3F = 8h00;
+      seg3G = 8h00;
+    }
+    else if (signal[7:4] == b0010){
+      digit_3 = 8h00;
+      seg3A = 1;
+      seg3B = 1;
+      seg3C = 8h00;
+      seg3D = 1;
+      seg3E = 1;
+      seg3F = 8h00;
+      seg3G = 1;
+    }
+    else if (signal[7:4] == b0011){
+      digit_3 = 8h00;
+      seg3A = 1;
+      seg3B = 1;
+      seg3C = 1;
+      seg3D = 1;
+      seg3E = 8h00;
+      seg3F = 8h00;
+      seg3G = 1;
+    }
+    else if (signal[7:4] == b0100){
+      digit_3 = 8h00;
+      seg3A = 8h00;
+      seg3B = 1;
+      seg3C = 1;
+      seg3D = 8h00;
+      seg3E = 8h00;
+      seg3F = 1;
+      seg3G = 1;
+    }
+    else if (signal[7:4] == b0101){
+      digit_3 = 8h00;
+      seg3A = 1;
+      seg3B = 8h00;
+      seg3C = 1;
+      seg3D = 1;
+      seg3E = 8h00;
+      seg3F = 1;
+      seg3G = 1;
+    }
+    else if (signal[7:4] == b0110){
+      digit_3 = 8h00;
+      seg3A = 1;
+      seg3B = 8h00;
+      seg3C = 1;
+      seg3D = 1;
+      seg3E = 1;
+      seg3F = 1;
+      seg3G = 1;
+    }
+    else if (signal[7:4] == b0111){
+      digit_3 = 8h00;
+      seg3A = 1;
+      seg3B = 1;
+      seg3C = 1;
+      seg3D = 8h00;
+      seg3E = 8h00;
+      seg3F = 8h00;
+      seg3G = 8h00;
+    }
+    else if (signal[7:4] == b1000){
+      digit_3 = 8h00;
+      seg3A = 1;
+      seg3B = 1;
+      seg3C = 1;
+      seg3D = 1;
+      seg3E = 1;
+      seg3F = 1;
+      seg3G = 1;
+    }
+    else if (signal[7:4] == b1001){
+      digit_3 = 8h00;
+      seg3A = 1;
+      seg3B = 1;
+      seg3C = 1;
+      seg3D = 1;
+      seg3E = 8h00;
+      seg3F = 1;
+      seg3G = 1;
+    }
+    
+    if (signal[11:8] == b0000){
+      
+      digit_2 = 8h00;
+      seg2A = 1;
+      seg2B = 1;
+      seg2C = 1;
+      seg2D = 1;
+      seg2E = 1;
+      seg2F = 1;
+      seg2G = 8h00;
+    }
+    else if (signal[11:8] == b0001){
+      digit_2 = 8h00;
+      seg2A = 8h00;
+      seg2B = 1;
+      seg2C = 1;
+      seg2D = 8h00;
+      seg2E = 8h00;
+      seg2F = 8h00;
+      seg2G = 8h00;
+    }
+    else if (signal[11:8] == b0010){
+      digit_2 = 8h00;
+      seg2A = 1;
+      seg2B = 1;
+      seg2C = 8h00;
+      seg2D = 1;
+      seg2E = 1;
+      seg2F = 8h00;
+      seg2G = 1;
+    }
+    else if (signal[11:8] == b0011){
+      digit_2 = 8h00;
+      seg2A = 1;
+      seg2B = 1;
+      seg2C = 1;
+      seg2D = 1;
+      seg2E = 8h00;
+      seg2F = 8h00;
+      seg2G = 1;
+    }
+    else if (signal[11:8] == b0100){
+      digit_2 = 8h00;
+      seg2A = 8h00;
+      seg2B = 1;
+      seg2C = 1;
+      seg2D = 8h00;
+      seg2E = 8h00;
+      seg2F = 1;
+      seg2G = 1;
+    }
+    else if (signal[11:8] == b0101){
+      digit_2 = 8h00;
+      seg2A = 1;
+      seg2B = 8h00;
+      seg2C = 1;
+      seg2D = 1;
+      seg2E = 8h00;
+      seg2F = 1;
+      seg2G = 1;
+    }
+    else if (signal[11:8] == b0110){
+      digit_2 = 8h00;
+      seg2A = 1;
+      seg2B = 8h00;
+      seg2C = 1;
+      seg2D = 1;
+      seg2E = 1;
+      seg2F = 1;
+      seg2G = 1;
+    }
+    else if (signal[11:8] == b0111){
+      digit_2 = 8h00;
+      seg2A = 1;
+      seg2B = 1;
+      seg2C = 1;
+      seg2D = 8h00;
+      seg2E = 8h00;
+      seg2F = 8h00;
+      seg2G = 8h00;
+    }
+    else if (signal[11:8] == b1000){
+      digit_2 = 8h00;
+      seg2A = 1;
+      seg2B = 1;
+      seg2C = 1;
+      seg2D = 1;
+      seg2E = 1;
+      seg2F = 1;
+      seg2G = 1;
+    }
+    else if (signal[11:8] == b1001){
+      digit_2 = 8h00;
+      seg2A = 1;
+      seg2B = 1;
+      seg2C = 1;
+      seg2D = 1;
+      seg2E = 8h00;
+      seg2F = 1;
+      seg2G = 1;
+    }
+    
+    if (signal[15:12] == b0000){
+      
+      digit_1 = 8h00;
+      seg1A = 1;
+      seg1B = 1;
+      seg1C = 1;
+      seg1D = 1;
+      seg1E = 1;
+      seg1F = 1;
+      seg1G = 8h00;
+    }
+    else if (signal[15:12] == b0001){
+      digit_1 = 8h00;
+      seg1A = 8h00;
+      seg1B = 1;
+      seg1C = 1;
+      seg1D = 8h00;
+      seg1E = 8h00;
+      seg1F = 8h00;
+      seg1G = 8h00;
+    }
+    else if (signal[15:12] == b0010){
+      digit_1 = 8h00;
+      seg1A = 1;
+      seg1B = 1;
+      seg1C = 8h00;
+      seg1D = 1;
+      seg1E = 1;
+      seg1F = 8h00;
+      seg1G = 1;
+    }
+    else if (signal[15:12] == b0011){
+      digit_1 = 8h00;
+      seg1A = 1;
+      seg1B = 1;
+      seg1C = 1;
+      seg1D = 1;
+      seg1E = 8h00;
+      seg1F = 8h00;
+      seg1G = 1;
+    }
+    else if (signal[15:12] == b0100){
+      digit_1 = 8h00;
+      seg1A = 8h00;
+      seg1B = 1;
+      seg1C = 1;
+      seg1D = 8h00;
+      seg1E = 8h00;
+      seg1F = 1;
+      seg1G = 1;
+    }
+    else if (signal[15:12] == b0101){
+      digit_1 = 8h00;
+      seg1A = 1;
+      seg1B = 8h00;
+      seg1C = 1;
+      seg1D = 1;
+      seg1E = 8h00;
+      seg1F = 1;
+      seg1G = 1;
+    }
+    else if (signal[15:12] == b0110){
+      digit_1 = 8h00;
+      seg1A = 1;
+      seg1B = 8h00;
+      seg1C = 1;
+      seg1D = 1;
+      seg1E = 1;
+      seg1F = 1;
+      seg1G = 1;
+    }
+    else if (signal[15:12] == b0111){
+      digit_1 = 8h00;
+      seg1A = 1;
+      seg1B = 1;
+      seg1C = 1;
+      seg1D = 8h00;
+      seg1E = 8h00;
+      seg1F = 8h00;
+      seg1G = 8h00;
+    }
+    else if (signal[15:12] == b1000){
+      digit_1 = 8h00;
+      seg1A = 1;
+      seg1B = 1;
+      seg1C = 1;
+      seg1D = 1;
+      seg1E = 1;
+      seg1F = 1;
+      seg1G = 1;
+    }
+    else if (signal[15:12] == b1001){
+      digit_1 = 8h00;
+      seg1A = 1;
+      seg1B = 1;
+      seg1C = 1;
+      seg1D = 1;
+      seg1E = 8h00;
+      seg1F = 1;
+      seg1G = 1;
+    }
+    
+  }
+}

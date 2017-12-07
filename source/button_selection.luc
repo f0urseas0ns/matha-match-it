@@ -1,0 +1,41 @@
+module button_selection (
+    input clk,  // clock
+    input rst,  // reset
+    input button,
+    output number,
+    output result
+  ) {
+  .clk(clk){
+    edge_detector edge_detector(#RISE(1), #FALL(0)); // detect rising edges
+    button_conditioner button_cond;     // button input conditioner
+    .rst(rst){
+      fsm state = {GETNUMBER, GETRESULT};
+      dff number_ff;
+      dff result_ff;
+    }
+  }
+  always {
+    number = number_ff.q;
+    result = result_ff.q;
+    button_cond.in = button;
+    edge_detector.in = button_cond.out;
+    
+    case(state.q){
+      state.GETNUMBER:
+        result_ff.d = 0;
+        number_ff.d = 0;
+        if (edge_detector.out){
+          number_ff.d=1;
+          state.d = state.GETRESULT;
+        }
+
+      state.GETRESULT:
+        result_ff.d = 0;
+        number_ff.d = 0;
+        if (edge_detector.out) {
+          result_ff.d = 1;   
+          state.d = state.GETNUMBER;
+        }
+    }
+  }
+}

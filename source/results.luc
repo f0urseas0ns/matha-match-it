@@ -1,0 +1,17 @@
+module results (
+    input clk,  // clock
+    input rst,  // reset    
+    input in[11],
+    output out[11]
+  ) {
+  .clk(clk) {
+    .rst(rst){
+    dff results[11];
+    }
+  }
+  
+  always {
+    out = results.q;
+    results.d = in;
+  }
+}

@@ -1,0 +1,109 @@
+module alu (
+    input clk,  // clock
+    input rst,  // reset
+    output out[11],
+    input a[11],
+    input b[11],
+    input alufn[6],
+    output v,
+    output z,
+    output n,
+    input getresultbutton,
+    input getnumberbutton,
+    input pass
+  ) {
+  
+  .clk(clk) {
+    //edge_detector edge_detector(#RISE(1), #FALL(0)); // detect rising edges
+    //button_conditioner button_cond;     // button input conditioner
+    .rst(rst){
+      boolean boolean;
+      adder adder;
+      shifter shifter;
+      comparator comparator;
+      dff alu[11];
+      dff counter [22];
+      fsm state = {IDLE, INITIALIZE, OPERATING};
+      num_cycle num_cycle;
+      dff alu_input_a[11];
+      dff alu_input_b[11];
+    }
+  }
+  
+  always {
+    alu.d = alu.q;
+    counter.d = counter.q + 1;
+    out = alu.q; //default out
+    
+    // USED
+    adder.a = alu_input_a.q;  // number chosen from number cycle
+    adder.b = alu_input_b.q;  // temporary result
+    alu_input_a.d = a;
+    alu_input_b.d = b;
+    
+    // CONNECTING OF ALUFN TO MODULES
+    adder.alufn = alufn;
+    boolean.alufn = alufn;
+    comparator.alufn = alufn;
+    shifter.alufn = alufn;
+    
+    case(state.q){
+      state.IDLE:
+        if (getnumberbutton) {
+          alu.d = num_cycle.number;
+          state.d = state.INITIALIZE;
+        }
+      
+      state.INITIALIZE:
+        if (getresultbutton){
+          state.d = state.OPERATING;
+        }
+      
+      state.OPERATING:
+        // CHOOSING MODULE TO USE
+        
+        if (alufn[5:4] == 00) {
+          if (getresultbutton) {
+            alu.d = adder.s;
+          }
+          
+         if (pass == 1) {
+          alu_input_a.d = 0;
+          alu_input_b.d = 0;
+          alu.d = 8888;
+          state.d = state.IDLE;
+        }
+        else if (pass == 2) {
+          alu_input_a.d = 0;
+          alu_input_b.d = 0;
+          alu.d = 7777;
+          }
+        }
+        else if (alufn[5:4] == 01) {
+          alu.d = boolean.boole;  // not used
+        }
+        else if (alufn[5:4] == 10) {
+          alu.d = shifter.sum;  // not used
+        }
+        else if (alufn[5:4] == 11) {
+          alu.d = comparator.out;  // not used
+        }
+
+    }
+    // UNUSED
+    v = adder.v;
+    z = adder.z;
+    n = adder.n;
+    
+    boolean.a = a;
+    boolean.b = b;
+    
+    shifter.a = a;
+    shifter.b = b[5];
+    
+    comparator.v = adder.v;
+    comparator.z = adder.z;
+    comparator.n = adder.n;
+    
+  }
+}

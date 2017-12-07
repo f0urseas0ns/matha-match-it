@@ -1,0 +1,154 @@
+module mojo_top (
+    input clk,              // 50MHz clock
+    input rst_n,            // reset button (active low)
+    output led [8],         // 8 user controllable LEDs
+    input cclk,             // configuration clock, AVR ready when high
+    output spi_miso,        // AVR SPI MISO
+    input spi_ss,           // AVR SPI Slave Select
+    input spi_mosi,         // AVR SPI MOSI
+    input spi_sck,          // AVR SPI Clock
+    output spi_channel [4], // AVR general purpose pins (used by default to select ADC channel)
+    input avr_tx,           // AVR TX (FPGA RX)
+    output avr_rx,          // AVR RX (FPGA TX)
+    input avr_rx_busy,      // AVR RX buffer full
+    output io_sel [4],      // Digit select on IO Shield
+    input rbtn,
+    input lbtn,
+    output digit_1,
+    output digit_2,
+    output digit_3,
+    output digit_4,
+    output seg1A,
+    output seg1B,
+    output seg1C,
+    output seg1D,
+    output seg1E,
+    output seg1F,
+    output seg1G,
+    output seg2A,
+    output seg2B,
+    output seg2C,
+    output seg2D,
+    output seg2E,
+    output seg2F,
+    output seg2G,
+    output seg3A,
+    output seg3B,
+    output seg3C,
+    output seg3D,
+    output seg3E,
+    output seg3F,
+    output seg3G,
+    output seg4A,
+    output seg4B,
+    output seg4C,
+    output seg4D,
+    output seg4E,
+    output seg4F,
+    output seg4G,
+    output lives[10],
+    output alulight[3]
+  ) {
+  
+  sig rst;                  // reset signal
+  
+  .clk(clk) {
+    // The reset conditioner is used to synchronize the reset signal to the FPGA
+    // clock. This ensures the entire FPGA comes out of reset at the same time.
+    reset_conditioner reset_cond;
+    .rst(rst){
+      alu alu;
+      operandbutton operandbutton;
+      num_cycle num_cycle;
+      levels levels;
+      getnumber getnumber;
+      results results;
+      button_selection button_selection;
+      numberdisplay numberdisplay;
+      sevenseg ss;
+      sevensegdecode decode;
+    }
+  }
+  
+  always {
+    reset_cond.in = ~rst_n; // input raw inverted reset signal
+    rst = reset_cond.out;   // conditioned reset
+    
+    // CONNECTIONS
+    results.in = alu.out;
+    alu.alufn = operandbutton.alufn;  // SETTING OF ALUFN
+    
+    alu.a = results.out;
+    alu.b = getnumber.number;
+    
+    levels.tempresult = alu.out;  // should be gotten from whatever result we have
+    alu.pass = levels.pass;
+    
+    getnumber.getnumberbutton = button_selection.number;  // GET NUMBER
+    operandbutton.changebutton = lbtn;  // CHANGE OPERAND
+    
+    levels.getresultbutton = button_selection.result;
+    levels.getnumberbutton = button_selection.number;
+    
+    alu.getresultbutton = button_selection.result;
+    alu.getnumberbutton = button_selection.number;
+    button_selection.button = rbtn;
+    
+    numberdisplay.tempresultinput = alu.out;
+    numberdisplay.numberinput = num_cycle.number;
+    numberdisplay.buttonpress = rbtn;
+    numberdisplay.pass_signal = levels.pass;
+    numberdisplay.lives = levels.life;
+    numberdisplay.targetresultinput = levels.targetresultdisplay;
+    
+    digit_1 = ss.digit_1;
+    digit_2 = ss.digit_2;
+    digit_3 = ss.digit_3;
+    digit_4 = ss.digit_4;
+    
+    seg1A = ss.seg1A;
+    seg1B = ss.seg1B;
+    seg1C = ss.seg1C;
+    seg1D = ss.seg1D;
+    seg1E = ss.seg1E;
+    seg1F = ss.seg1F;
+    seg1G = ss.seg1G;
+    
+    seg2A = ss.seg2A;
+    seg2B = ss.seg2B;
+    seg2C = ss.seg2C;
+    seg2D = ss.seg2D;
+    seg2E = ss.seg2E;
+    seg2F = ss.seg2F;
+    seg2G = ss.seg2G;
+    
+    seg3A = ss.seg3A;
+    seg3B = ss.seg3B;
+    seg3C = ss.seg3C;
+    seg3D = ss.seg3D;
+    seg3E = ss.seg3E;
+    seg3F = ss.seg3F;
+    seg3G = ss.seg3G;
+    
+    seg4A = ss.seg4A;
+    seg4B = ss.seg4B;
+    seg4C = ss.seg4C;
+    seg4D = ss.seg4D;
+    seg4E = ss.seg4E;
+    seg4F = ss.seg4F;
+    seg4G = ss.seg4G;
+    
+    decode.char = numberdisplay.outputnumber;
+    ss.signal = decode.signal;
+    
+    lives[9:0] = levels.life;
+    alulight[2:0] = operandbutton.status;
+    
+    // UNUSED
+    spi_miso = bz;          // not using SPI
+    spi_channel = bzzzz;    // not using flags
+    avr_rx = bz;            // not using serial port
+    io_sel = 4hf;           // select no digits
+    led = 8h00;    
+  }
+}
