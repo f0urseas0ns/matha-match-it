@@ -98,9 +98,15 @@ module mojo_top (
     numberdisplay.numberinput = num_cycle.number;
     numberdisplay.buttonpress = rbtn;
     numberdisplay.pass_signal = levels.pass;
-    numberdisplay.lives = levels.life;
+    numberdisplay.lives = levels.lifeled;
     numberdisplay.targetresultinput = levels.targetresultdisplay;
+
+    decode.char = numberdisplay.outputnumber;
+    ss.signal = decode.signal;
     
+    lives[9:0] = levels.lifeled;
+    alulight[2:0] = operandbutton.status;
+
     digit_1 = ss.digit_1;
     digit_2 = ss.digit_2;
     digit_3 = ss.digit_3;
@@ -137,12 +143,6 @@ module mojo_top (
     seg4E = ss.seg4E;
     seg4F = ss.seg4F;
     seg4G = ss.seg4G;
-    
-    decode.char = numberdisplay.outputnumber;
-    ss.signal = decode.signal;
-    
-    lives[9:0] = levels.life;
-    alulight[2:0] = operandbutton.status;
     
     // UNUSED
     spi_miso = bz;          // not using SPI

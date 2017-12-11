@@ -10,19 +10,16 @@ module alu (
     output n,
     input getresultbutton,
     input getnumberbutton,
-    input pass
+    input pass[2]
   ) {
   
   .clk(clk) {
-    //edge_detector edge_detector(#RISE(1), #FALL(0)); // detect rising edges
-    //button_conditioner button_cond;     // button input conditioner
     .rst(rst){
       boolean boolean;
       adder adder;
       shifter shifter;
       comparator comparator;
       dff alu[11];
-      dff counter [22];
       fsm state = {IDLE, INITIALIZE, OPERATING};
       num_cycle num_cycle;
       dff alu_input_a[11];
@@ -32,9 +29,8 @@ module alu (
   
   always {
     alu.d = alu.q;
-    counter.d = counter.q + 1;
     out = alu.q; //default out
-    
+
     // USED
     adder.a = alu_input_a.q;  // number chosen from number cycle
     adder.b = alu_input_b.q;  // temporary result
@@ -70,7 +66,7 @@ module alu (
          if (pass == 1) {
           alu_input_a.d = 0;
           alu_input_b.d = 0;
-          alu.d = 8888;
+          alu.d = 0;
           state.d = state.IDLE;
         }
         else if (pass == 2) {
@@ -79,17 +75,20 @@ module alu (
           alu.d = 7777;
           }
         }
+
+        // UNUSED MODULES
         else if (alufn[5:4] == 01) {
-          alu.d = boolean.boole;  // not used
+          alu.d = boolean.boole;
         }
         else if (alufn[5:4] == 10) {
-          alu.d = shifter.sum;  // not used
+          alu.d = shifter.sum;
         }
         else if (alufn[5:4] == 11) {
-          alu.d = comparator.out;  // not used
+          alu.d = comparator.out;
         }
 
     }
+    
     // UNUSED
     v = adder.v;
     z = adder.z;

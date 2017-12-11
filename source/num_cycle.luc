@@ -1,26 +1,23 @@
 module num_cycle (
     input clk,  // clock
     input rst,  // reset
-    output number[8], // number
-    output currentstate[8]
+    output number[11] // number
   ) {
 
   .clk(clk){
     .rst(rst){
       dff counter[26](.clk(clk));
-      dff numb[8](.clk(clk));
+      dff numb[11](.clk(clk));
       fsm state = {ADD, RESET};
     }
   }
   always {
     counter.d = counter.q + 1;
     number = numb.q;
-    currentstate = b00;
     
     case(state.q){
       state.ADD:
         // CYCLING THROUGH THE NUMBERS
-        currentstate = 8h01;
         numb.d = numb.q;
         if (counter.q[25] == 1) {
           numb.d = numb.q + 1;
@@ -34,7 +31,6 @@ module num_cycle (
         }
       state.RESET:
         // RESETTING NUMBER CYCLE BACK TO ZERO
-        currentstate = 8h02;
         numb.d = 0;
         if (counter.q[25] == 1){
           state.d = state.ADD;

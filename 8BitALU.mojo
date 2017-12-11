@@ -14,8 +14,8 @@
     <src>shifter.luc</src>
     <src>seven_seg.luc</src>
     <src>button_selection.luc</src>
-    <src>numberdisplay.luc</src>
     <src>adder.luc</src>
+    <src>numberdisplay.luc</src>
     <ucf>io_shield.ucf</ucf>
     <ucf lib="true">mojo.ucf</ucf>
     <component>pn_gen.luc</component>

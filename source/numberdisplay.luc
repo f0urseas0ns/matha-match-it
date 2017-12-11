@@ -6,19 +6,19 @@ module numberdisplay (
     input tempresultinput[11],
     input targetresultinput[11],
     input buttonpress,
-    input lives[9],
-    input pass_signal
+    input lives[10],
+    input pass_signal[2]
   ) {
   
   .clk(clk){
     edge_detector edge_detector(#RISE(1), #FALL(0)); // detect rising edges
     button_conditioner button_cond;     // button input conditioner
     .rst(rst){
-      fsm state = {STARTNUMCYCLE, STARTTEMPRESULT, TARGETRESULT, NUMCYCLE, TEMPRESULT,BUFFER, LOSE};
+      fsm state = {STARTNUMCYCLE, STARTTEMPRESULT, TARGETRESULT, NUMCYCLE, TEMPRESULT,BUFFER, LOSE, WIN};
       dff outputreg[11];
       dff counter[27];
-      dff currentlives[9];
-      dff pass;
+      dff currentlives[10];
+      dff pass[2];
     }
   }
   always {
@@ -27,6 +27,8 @@ module numberdisplay (
     outputnumber = outputreg.q;
     counter.d = counter.q + 1;
     pass.d = pass_signal;
+  
+    
     case(state.q){
       state.STARTNUMCYCLE:
         outputreg.d = numberinput;
@@ -57,31 +59,40 @@ module numberdisplay (
         }
       
       state.TEMPRESULT:
-        outputreg.d = tempresultinput;        
+        outputreg.d = tempresultinput;
         if (counter.q[26] == 1){
-          if (currentlives.q > 0){
+          if (pass.q == 1){
+            state.d = state.BUFFER;
+              counter.d = 0;
+            }
+          else if (pass.q == 2){
+            outputreg.d = 2047;
+            state.d = state.WIN;
+          }                
+          else if  (currentlives.q > 0){
             state.d = state.NUMCYCLE;
             counter.d = 0;
           }
-          else if (pass.q == 1){
-          if (counter.q[26] == 1){
-            state.d = state.STARTNUMCYCLE;
-              counter.d = 0;
-            }
-          }
+
           else if (currentlives.q == 0){
             outputreg.d = 7777;
             state.d = state.LOSE;
           }
+
         }
         
       state.BUFFER:
+        outputreg.d = numberinput;
         if (edge_detector.out)
         state.d = state.STARTNUMCYCLE;
           
       state.LOSE:
         outputreg.d = 7777;
         state.d = state.LOSE;
+        
+      state.WIN:
+        outputreg.d = 2047;
+        state.d = state.WIN;
     }
   }
 }

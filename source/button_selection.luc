@@ -12,11 +12,13 @@ module button_selection (
       fsm state = {GETNUMBER, GETRESULT};
       dff number_ff;
       dff result_ff;
+      dff internalclock[26];
     }
   }
   always {
     number = number_ff.q;
     result = result_ff.q;
+    internalclock.d = internalclock.q + 1;
     button_cond.in = button;
     edge_detector.in = button_cond.out;
     
@@ -27,6 +29,7 @@ module button_selection (
         if (edge_detector.out){
           number_ff.d=1;
           state.d = state.GETRESULT;
+          internalclock.d = 0;
         }
 
       state.GETRESULT:
@@ -35,6 +38,7 @@ module button_selection (
         if (edge_detector.out) {
           result_ff.d = 1;   
           state.d = state.GETNUMBER;
+          internalclock.d = 0;
         }
     }
   }

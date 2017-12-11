@@ -3009,7 +3009,6 @@ module sevensegdecode (
       3000: signal = 16b0011000000000000;
 
       7777: signal = 16b0111011101110111;  // LOSE
-      8888: signal = 16b1000100010001000;  // WIN
       default: signal = 16b0000000000000000;
     }
   }
