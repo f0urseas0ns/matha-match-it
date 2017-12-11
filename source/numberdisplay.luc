@@ -64,8 +64,10 @@ module numberdisplay (
             counter.d = 0;
           }
           else if (pass.q == 1){
-            outputreg.d = 8888;
-            state.d = state.BUFFER;
+          if (counter.q[26] == 1){
+            state.d = state.STARTNUMCYCLE;
+              counter.d = 0;
+            }
           }
           else if (currentlives.q == 0){
             outputreg.d = 7777;

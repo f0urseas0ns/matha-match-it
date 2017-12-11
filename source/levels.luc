@@ -72,6 +72,7 @@ module levels (
             state.d = state.IDLE2;
             counter.d = 0;
             pass_signal.d = 1;
+            targetresult.d = 0;
           }
           else if (tempresult != 8) {
             if (lives.q > 0) {
@@ -93,11 +94,12 @@ module levels (
         if (getresultbutton == 1) {
           state.d = state.TWO;
           counter.d = 0;
+                      targetresult.d = 0;
         }
       
       state.TWO:
         // LEVEL TWO
-        targetresult.d = 158;
+        targetresult.d = 200;
         
         if (tempresult >= 2000) {
           state.d = state.LOSE;
@@ -116,11 +118,12 @@ module levels (
         }
         //choosing a number
         if (getnumberbutton == 1) {
-          if (tempresult == 158) {
+          if (tempresult == 200) {
             lives.d = 9b111111111;
             state.d = state.IDLE3;
             counter.d = 0;
             pass_signal.d = 1;
+                        targetresult.d = 0;
           }
           else if (tempresult != 158) {
             if (lives.q > 0) {
@@ -141,6 +144,7 @@ module levels (
         if (getresultbutton == 1) {
           state.d = state.THREE;
           counter.d = 0;
+                      targetresult.d = 0;
         }
       
       state.THREE:
@@ -168,6 +172,7 @@ module levels (
             state.d = state.IDLE4;
             counter.d = 0;
             pass_signal.d = 1;
+                        targetresult.d = 0;
           }
           else if (tempresult != 709) {
             if (lives.q > 0) {
@@ -188,6 +193,7 @@ module levels (
         if (getresultbutton == 1) {
           state.d = state.FOUR;
           counter.d = 0;
+                      targetresult.d = 0;
         }
       
       state.FOUR:
@@ -215,6 +221,7 @@ module levels (
             state.d = state.IDLE5;
             counter.d = 0;
             pass_signal.d = 1;
+                        targetresult.d = 0;
           }
           else if (tempresult != 557) {
             if (lives.q > 0) {
@@ -235,6 +242,7 @@ module levels (
         if (getresultbutton == 1) {
           state.d = state.FIVE;
           counter.d = 0;
+                      targetresult.d = 0;
         }
         
       state.FIVE:
@@ -262,6 +270,7 @@ module levels (
             state.d = state.IDLE6;
             counter.d = 0;
             pass_signal.d = 1;
+                        targetresult.d = 0;
           }
           else if (tempresult != 258) {
             if (lives.q > 0) {
@@ -282,6 +291,7 @@ module levels (
         if (getresultbutton == 1) {
           state.d = state.SIX;
           counter.d = 0;
+                      targetresult.d = 0;
         }
         
       state.SIX:
@@ -309,6 +319,7 @@ module levels (
             state.d = state.IDLE7;
             counter.d = 0;
             pass_signal.d=1;
+                        targetresult.d = 0;
           }
           else if (tempresult != 861) {
             if (lives.q > 0) {
@@ -329,6 +340,7 @@ module levels (
         if (getresultbutton == 1) {
           state.d = state.SEVEN;
           counter.d = 0;
+                      targetresult.d = 0;
         }
         
       state.SEVEN:
@@ -356,6 +368,7 @@ module levels (
             state.d = state.IDLE8;
             counter.d = 0;
             pass_signal.d = 1;
+                        targetresult.d = 0;
           }
           else if (tempresult != 692) {
             if (lives.q > 0) {
@@ -376,6 +389,7 @@ module levels (
         if (getresultbutton == 1) {
           state.d = state.EIGHT;
           counter.d = 0;
+                      targetresult.d = 0;
         }
         
       state.EIGHT:
@@ -403,6 +417,7 @@ module levels (
             state.d = state.IDLE9;
             counter.d = 0;
             pass_signal.d = 1;
+                        targetresult.d = 0;
           }
           else if (tempresult != 947) {
             if (lives.q > 0) {
@@ -423,6 +438,7 @@ module levels (
         if (getresultbutton == 1) {
           state.d = state.NINE;
           counter.d = 0;
+                      targetresult.d = 0;
         }
         
       state.NINE:
@@ -450,6 +466,7 @@ module levels (
             state.d = state.IDLE10;
             counter.d = 0;
             pass_signal.d = 1;
+                        targetresult.d = 0;
           }
           else if (tempresult != 326) {
             if (lives.q > 0) {
@@ -470,6 +487,7 @@ module levels (
         if (getresultbutton == 1) {
           state.d = state.TEN;
           counter.d = 0;
+                      targetresult.d = 0;
         }
         
       state.TEN:
